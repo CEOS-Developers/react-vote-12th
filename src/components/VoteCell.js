@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 
 export default function VoteCell(props) {
-  const { index, person } = props;
+  const { index, person, vote } = props;
   const { id, name, voteCount } = person;
 
   const voteToCandidate = () => {
@@ -19,7 +19,7 @@ export default function VoteCell(props) {
         switch (status) {
           case 200:
             alert(`${name}에게 투표 완료`);
-            window.location.reload();
+            vote();
             break;
           case 400:
             alert('권한 없음');

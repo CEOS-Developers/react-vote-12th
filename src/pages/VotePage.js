@@ -7,42 +7,48 @@ import VoteCell from '../components/VoteCell';
 export default function VotePage() {
   const [candidates, setCandidates] = useState([]);
 
-  useEffect(() => {
+  async function getCandidates() {
     // GET, Candidates
-    axios({
+    const response = await axios({
       method: 'get',
       url: 'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/candidates',
       responseType: 'stream',
-    }).then((response) => {
-      const { status, data } = response;
-
-      switch (status) {
-        case 200:
-          // 투표순위대로 정렬
-          data.sort((a, b) => {
-            return b.voteCount - a.voteCount;
-          });
-          setCandidates(data);
-          break;
-        case 400:
-          alert('권한 없음');
-          break;
-        case 500:
-          alert('서버 오류');
-          break;
-        default:
-          break;
-      }
     });
+
+    const { status, data } = response;
+
+    switch (status) {
+      case 200:
+        // 투표순위대로 정렬
+        data.sort((a, b) => {
+          return b.voteCount - a.voteCount;
+        });
+        setCandidates(data);
+        break;
+      case 400:
+        alert('권한 없음');
+        break;
+      case 500:
+        alert('서버 오류');
+        break;
+      default:
+        break;
+    }
+  }
+
+  useEffect(() => {
+    getCandidates();
   }, []);
 
   const candidatesList = candidates.map((person, index) => {
-    return <VoteCell key={index} {...{ index }} {...{ person }} />;
+    return <VoteCell key={index} vote={getCandidates} {...{ index }} {...{ person }} />;
   });
 
   return (
     <Wrapper>
-      <Title>Q. 13기 프론트엔드 팀장은 누구?</Title>
+      <Title>
+        <RedColor>Q. 13기 프론트엔드 팀장</RedColor>은 누구?
+      </Title>
       <SubTitle>CEOS 프론트엔드 13기 개발팀장 투표 창입니다.</SubTitle>
 
       <VoteBox>{candidatesList}</VoteBox>
@@ -58,9 +64,16 @@ const Title = styled.h3`
   margin: 0;
   padding: 0;
 
-  margin: 20px 10px;
+  padding: 20px 10px;
+
+  font-size: 20px;
 `;
 
+const RedColor = styled.span`
+  color: red;
+  font-weight: bold;
+  font-size: 22px;
+`;
 const SubTitle = styled.h5`
   margin: 0;
   padding: 0;
