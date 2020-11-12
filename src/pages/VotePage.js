@@ -1,19 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 import VoteCell from '../components/VoteCell';
 
 export default function VotePage() {
-  const [candidates, setCandidates] = useState(['정시원', '고은', '유현우', '짱구', '맹구', '철수', '퉁퉁이']);
+  const [candidates, setCandidates] = useState([]);
 
-  const candidatesList = candidates.map((person) => {
-    return <VoteCell>{person}</VoteCell>;
+  useEffect(() => {
+    axios({
+      method: 'get',
+      url: 'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/candidates',
+      responseType: 'stream',
+    }).then(function (response) {
+      // 투표순위대로 정렬
+      let data = response.data;
+      data.sort((a, b) => {
+        return b.voteCount - a.voteCount;
+      });
+
+      setCandidates(data);
+    });
+  }, []);
+
+  const candidatesList = candidates.map((person, index) => {
+    return (
+      <VoteCell {...{ index }} voteCount={person.voteCount}>
+        {person.name}
+      </VoteCell>
+    );
   });
   return (
     <Wrapper>
       <Title>Q. 13기 프론트엔드 팀장은 누구?</Title>
       <SubTitle>CEOS 프론트엔드 13기 개발팀장 투표 창입니다.</SubTitle>
-      {/* <VoteBox></VoteBox> */}
+
       <VoteBox>{candidatesList}</VoteBox>
     </Wrapper>
   );
