@@ -1,10 +1,8 @@
 import React from 'react';
+import VoteContainer from './components/VoteContainer';
 
 function App() {
-  return (
-    <div > 12기 프론트엔드 개발팀장 투표 ^.^
-    </div>
-  );
+  return <VoteContainer />;
 }
 
 export default App;
