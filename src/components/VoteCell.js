@@ -1,14 +1,48 @@
 import React from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 export default function VoteCell(props) {
+  const { index, person } = props;
+  const { id, name, voteCount } = person;
+
+  const voteToCandidate = () => {
+    // GET , VOTE
+    axios({
+      method: 'get',
+      url: `http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/vote?id=${id}`,
+      responseType: 'stream',
+    })
+      .then((response) => {
+        const { status } = response;
+        console.log(status);
+        switch (status) {
+          case 200:
+            alert(`${name}에게 투표 완료`);
+            window.location.reload();
+            break;
+          case 400:
+            alert('권한 없음');
+            break;
+          case 500:
+            alert('서버 오류');
+            break;
+          default:
+            break;
+        }
+      })
+      .catch((err) => {
+        console.log(`Error: ${err}`);
+      });
+  };
+
   return (
     <Wrapper>
-      <Ranking>{props.index + 1}위:</Ranking>
+      <Ranking>{index + 1}위:</Ranking>
       <Name>
-        {props.children} [{props.voteCount}]
+        {name} [{voteCount}]
       </Name>
-      <CompleteButton>투표하기</CompleteButton>
+      <CompleteButton onClick={voteToCandidate}>투표하기</CompleteButton>
     </Wrapper>
   );
 }

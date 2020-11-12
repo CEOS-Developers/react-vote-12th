@@ -8,32 +8,38 @@ export default function VotePage() {
   const [candidates, setCandidates] = useState([]);
 
   useEffect(() => {
+    // GET, Candidates
     axios({
       method: 'get',
       url: 'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/candidates',
       responseType: 'stream',
-    })
-      .then(function (response) {
-        // 투표순위대로 정렬
-        let data = response.data;
-        data.sort((a, b) => {
-          return b.voteCount - a.voteCount;
-        });
+    }).then((response) => {
+      const { status, data } = response;
 
-        setCandidates(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      switch (status) {
+        case 200:
+          // 투표순위대로 정렬
+          data.sort((a, b) => {
+            return b.voteCount - a.voteCount;
+          });
+          setCandidates(data);
+          break;
+        case 400:
+          alert('권한 없음');
+          break;
+        case 500:
+          alert('서버 오류');
+          break;
+        default:
+          break;
+      }
+    });
   }, []);
 
   const candidatesList = candidates.map((person, index) => {
-    return (
-      <VoteCell {...{ index }} voteCount={person.voteCount}>
-        {person.name}
-      </VoteCell>
-    );
+    return <VoteCell key={index} {...{ index }} {...{ person }} />;
   });
+
   return (
     <Wrapper>
       <Title>Q. 13기 프론트엔드 팀장은 누구?</Title>
