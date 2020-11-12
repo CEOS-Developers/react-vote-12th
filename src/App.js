@@ -13,54 +13,47 @@ function App() {
 
   useEffect(() => {
     const getCandidate = async () => {
-      const response = await axios.get(
-        'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/candidates'
-      );
-      candidatesTemp = response.data;
-      console.log('response : ', response);
-      // setCandidates(response);
-      // setCandidates([...candidates, {
-      //   name: response,
-      //   cid: cid,
-      //   voteCount: 0
-      // }]);
+      try {
+        const response = await axios.get(
+          'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/candidates'
+        );
+        candidatesTemp = response.data;
+      } catch (e) {
+        console.log('Candidates error : ', e);
+      }
     }
     
-
-    // for (let i=0; i<10; i++) {
-    // }
     async function sortVotes() {
-      // setCandidatesSorted(candidates);
       sortedComponents = candidatesTemp
         .sort((a, b) => {return b.voteCount - a.voteCount})
-        // .map((cand, i) => { return <Candidate name={cand.name} 
-        // voteCount={cand.voteCount} rank={i} />})
     }
+
     async function getAndSort() {
       await getCandidate();
       await sortVotes();
-      console.log('sortedComponents : ', sortedComponents);
       setCandidates(sortedComponents);
     }
     getAndSort();
-    
-    // console.log('candidates : ', candidates);
   }, [rerenderTrigger]);
 
-  async function vote(cid) {
-    await axios.get(
-      `http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/vote?id=${cid}`
-    );
-    // rerenderTrigger = true ? setRerenderTrigger(false) : setRerenderTrigger(true);
-    await setRerenderTrigger(rerenderTrigger ? false : true);
-    console.log('@@@@@@@    Voted');
+  async function vote(cid, name) {
+    try {
+      await axios.get(
+        `http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/vote?id=${cid}`
+      );
+      await alert(`${name}님에게 투표 완료 !!!`);
+      await setRerenderTrigger(rerenderTrigger ? false : true);
+    } catch (error) {
+      alert('투표를 실패하셨어요...');
+      console.log('Vote error : ', error);
+    }
   }
 
   return (
     <Wrapper>
       <Title />
-      <ul style={{listStyle: 'none'}}>
-        <li>
+      <ul style={{listStyle: 'none', width: '100%'}}>
+        <li style={{width: '100%'}}>
           {candidates.map((cand, i) => { return ( <Candidate name={cand.name} 
           voteCount={cand.voteCount} cid={cand.id} rank={i} vote={vote} />)})}
         </li>

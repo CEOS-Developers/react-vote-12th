@@ -3,23 +3,34 @@ import styled from 'styled-components';
 
 function Candidate({ name, voteCount, cid, rank, vote }) {
   function clickTest() {
-    console.log('clickTest!!!');
-    vote(cid);
+    vote(cid, name);
   }
 
   return (
     <Wrapper>
-      {rank+1}위:{name} [{voteCount}표]
-      <VoteButton type='button' onClick={clickTest}>투표</VoteButton>
+      <span>{rank+1}위:</span>
+      <CandidateAndVote>
+        {name}[{voteCount}표]
+        <VoteButton type='button' onClick={clickTest}>투표</VoteButton>
+      </CandidateAndVote>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
+  width: 100%;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const CandidateAndVote = styled.div`
+  width: 30%;
+  text-align: right;
 `;
 
 const VoteButton = styled.button`
-
 `;
 
 export default Candidate;
