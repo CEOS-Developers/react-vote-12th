@@ -1,3 +1,11 @@
+1. aioxs get을 useEffect로 해야하는 이유.
+
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
