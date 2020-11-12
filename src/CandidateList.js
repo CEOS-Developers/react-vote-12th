@@ -9,7 +9,6 @@ function CandidateList() {
             'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/candidates'
         );
         setCandidates(data.data);
-        console.log('받아옴');
     }
     function Vote(candidate) {
         async function UpdateVoteCount() {
