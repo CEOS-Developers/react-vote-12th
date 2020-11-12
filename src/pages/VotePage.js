@@ -38,7 +38,7 @@ export default function VotePage() {
 
   useEffect(() => {
     getCandidates();
-  }, []);
+  });
 
   const candidatesList = candidates.map((person, index) => {
     return <VoteCell key={index} vote={getCandidates} {...{ index }} {...{ person }} />;
