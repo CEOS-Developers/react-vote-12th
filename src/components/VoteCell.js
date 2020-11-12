@@ -2,8 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 
 export default function VoteCell(props) {
-  console.log(props);
-  return <Wrapper></Wrapper>;
+  return (
+    <Wrapper>
+      <Name>{props.children}</Name>
+      <Number>{props.number}</Number>
+    </Wrapper>
+  );
 }
 
 const Wrapper = styled.div`
@@ -11,3 +15,9 @@ const Wrapper = styled.div`
 
   border: 1px black;
 `;
+
+const Name = styled.div`
+  margin: 20px 15px;
+`;
+
+const Number = styled.div``;

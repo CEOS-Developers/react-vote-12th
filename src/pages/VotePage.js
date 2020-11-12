@@ -6,15 +6,14 @@ import VoteCell from '../components/VoteCell';
 export default function VotePage() {
   const [candidates, setCandidates] = useState(['정시원', '고은', '유현우', '짱구', '맹구', '철수', '퉁퉁이']);
 
-  const candidatesList = () => {
-    return candidates.map((person) => {
-      return <VoteCell>{person}</VoteCell>;
-    });
-  };
+  const candidatesList = candidates.map((person) => {
+    return <VoteCell>{person}</VoteCell>;
+  });
   return (
     <Wrapper>
       <Title>Q. 13기 프론트엔드 팀장은 누구?</Title>
       <SubTitle>CEOS 프론트엔드 13기 개발팀장 투표 창입니다.</SubTitle>
+      {/* <VoteBox></VoteBox> */}
       <VoteBox>{candidatesList}</VoteBox>
     </Wrapper>
   );
@@ -39,8 +38,10 @@ const SubTitle = styled.h5`
 `;
 
 const VoteBox = styled.div`
-  margin: 0;
+  margin: 30px 0;
   padding: 0;
 
-  background-color: red;
+  background-color: #f2f2f2;
+  border: solid 1px black;
+  box-shadow: 0 4px 8px 0 rgba(69, 111, 128, 0.25);
 `;
