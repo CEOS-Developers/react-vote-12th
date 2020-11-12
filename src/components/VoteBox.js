@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import styled from "styled-components";
 export default function VoteBox() {
   const [voteDataList, setVoteDataList] = useState([]);
 
@@ -55,10 +56,14 @@ export default function VoteBox() {
   };
 
   const newVoteDataList = voteDataList.map((data, index) => (
-    <li key={data.id}>
-      {index + 1}위: {data.name} [{data.voteCount}표]{" "}
-      <button onClick={() => handleVoteButton(data.id, data.name)}>투표</button>
-    </li>
+    <VoteDataWrapper>
+      <VoteDataList key={data.id}>
+        {index + 1}위: {data.name} [{data.voteCount}표]{" "}
+      </VoteDataList>
+      <VoteButton onClick={() => handleVoteButton(data.id, data.name)}>
+        투표
+      </VoteButton>
+    </VoteDataWrapper>
   ));
 
   return (
@@ -67,3 +72,20 @@ export default function VoteBox() {
     </div>
   );
 }
+
+const VoteDataList = styled.li`
+  list-style: none;
+  display: flex;
+`;
+
+const VoteButton = styled.button`
+  color: white;
+  background-color: blue;
+  border-radius: 7px;
+  display: flex;
+  margin-left: 30px;
+`;
+const VoteDataWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
