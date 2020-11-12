@@ -12,15 +12,19 @@ export default function VotePage() {
       method: 'get',
       url: 'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/candidates',
       responseType: 'stream',
-    }).then(function (response) {
-      // 투표순위대로 정렬
-      let data = response.data;
-      data.sort((a, b) => {
-        return b.voteCount - a.voteCount;
-      });
+    })
+      .then(function (response) {
+        // 투표순위대로 정렬
+        let data = response.data;
+        data.sort((a, b) => {
+          return b.voteCount - a.voteCount;
+        });
 
-      setCandidates(data);
-    });
+        setCandidates(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const candidatesList = candidates.map((person, index) => {
