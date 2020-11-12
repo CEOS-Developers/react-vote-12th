@@ -11,9 +11,23 @@ function CandidateList() {
         setCandidates(data.data);
         console.log('받아옴');
     }
+    function Vote(candidate) {
+        async function UpdateVoteCount() {
+            await axios.get(
+                `http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/vote?id=${candidate.id}` 
+            )
+            .then (function(response){
+                alert(candidate.name + '님에게 투표 완료!');
+            })
+            .catch (function(error) {
+                alert('투표 실패');
+            });
+        }
+        UpdateVoteCount();
+    }
     useEffect(() => {
         getCandidates();
-    }, []);
+    }, [candidates]);
     if(!candidates){
         return null;
     }
@@ -26,10 +40,10 @@ function CandidateList() {
             {candidates.map((candidate, index) => {
                 return(
                     <EachCandidate>
-                        <CandidateRank>{index+1}</CandidateRank>
+                        <CandidateRank>{index+1}위: </CandidateRank>
                         <CandidateName>{candidate.name}</CandidateName>
-                        <CandidateVoteCount>{candidate.voteCount}</CandidateVoteCount>
-                        <VoteButton>투표</VoteButton>
+                        <CandidateVoteCount>[{candidate.voteCount}]표</CandidateVoteCount>
+                        <VoteButton onClick={function(){Vote(candidate)}}>투표</VoteButton>
                     </EachCandidate>
                 );
             })}
