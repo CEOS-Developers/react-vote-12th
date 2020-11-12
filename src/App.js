@@ -6,10 +6,9 @@ import Candidate from './Candidate';
 
 function App() {
   const [candidates, setCandidates] = useState([]);
-  const [candidatesSorted, setCandidatesSorted] = useState([]);
   const [rerenderTrigger, setRerenderTrigger] = useState(true);
-  let candidatesTemp = [];
-  let sortedComponents = [];
+  let candidatesData = [];
+  let sortedCandidates = [];
 
   useEffect(() => {
     const getCandidate = async () => {
@@ -17,21 +16,21 @@ function App() {
         const response = await axios.get(
           'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/candidates'
         );
-        candidatesTemp = response.data;
+        candidatesData = response.data;
       } catch (e) {
         console.log('Candidates error : ', e);
       }
     }
     
     async function sortVotes() {
-      sortedComponents = candidatesTemp
+      sortedCandidates = candidatesData
         .sort((a, b) => {return b.voteCount - a.voteCount})
     }
 
     async function getAndSort() {
       await getCandidate();
       await sortVotes();
-      setCandidates(sortedComponents);
+      setCandidates(sortedCandidates);
     }
     getAndSort();
   }, [rerenderTrigger]);
