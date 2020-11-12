@@ -3,14 +3,21 @@ import axios from "axios";
 export default function VoteBox() {
   const [voteDataList, setVoteDataList] = useState([]);
 
+  const sortVoteDataList = (dataList) => {
+    const returnDataList = dataList
+      .concat()
+      .sort((a, b) => (a.voteCount > b.voteCount ? -1 : 1));
+    return returnDataList;
+  };
+
   useEffect(() => {
     const fetchVoteData = async () => {
       try {
         const response = await axios.get(
           "http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/candidates"
         );
-
-        setVoteDataList(response.data);
+        const initialVoteDataList = sortVoteDataList(response.data);
+        setVoteDataList(initialVoteDataList);
       } catch (e) {
         console.log(e);
       }
@@ -18,8 +25,22 @@ export default function VoteBox() {
     fetchVoteData();
   }, []);
 
+  const sendVoteResult = async (id, name) => {
+    try {
+      const response = await axios.get(
+        `http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/vote?id=${id}`
+      );
+      //아 get으로도 보내는건가..? post를 안써도 되는거야?
+      if (response) {
+        alert(`${name}님께 투표 완료!`);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const handleVoteButton = (id, name) => {
-    alert(`${name}님께 투표 완료!`);
+    sendVoteResult(id, name);
     const nextVoteDataList = voteDataList.map((data, index) => {
       if (data.id !== id) return data;
       return {
@@ -28,9 +49,7 @@ export default function VoteBox() {
       };
     });
 
-    const sortedVoteDataList = nextVoteDataList
-      .concat()
-      .sort((a, b) => (a.voteCount > b.voteCount ? -1 : 1));
+    const sortedVoteDataList = sortVoteDataList(nextVoteDataList);
 
     setVoteDataList(sortedVoteDataList);
   };
