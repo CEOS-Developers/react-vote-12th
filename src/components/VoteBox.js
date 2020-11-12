@@ -9,6 +9,7 @@ export default function VoteBox() {
         const response = await axios.get(
           "http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/candidates"
         );
+
         setVoteDataList(response.data);
       } catch (e) {
         console.log(e);
@@ -17,7 +18,8 @@ export default function VoteBox() {
     fetchVoteData();
   }, []);
 
-  const handleVoteButton = (id) => {
+  const handleVoteButton = (id, name) => {
+    alert(`${name}님께 투표 완료!`);
     const nextVoteDataList = voteDataList.map((data, index) => {
       if (data.id !== id) return data;
       return {
@@ -25,14 +27,18 @@ export default function VoteBox() {
         voteCount: data.voteCount + 1,
       };
     });
-    setVoteDataList(nextVoteDataList);
+
+    const sortedVoteDataList = nextVoteDataList
+      .concat()
+      .sort((a, b) => (a.voteCount > b.voteCount ? -1 : 1));
+
+    setVoteDataList(sortedVoteDataList);
   };
 
-  console.log(voteDataList);
   const newVoteDataList = voteDataList.map((data, index) => (
     <li key={data.id}>
       {index + 1}위: {data.name} [{data.voteCount}표]{" "}
-      <button onClick={() => handleVoteButton(data.id)}>투표</button>
+      <button onClick={() => handleVoteButton(data.id, data.name)}>투표</button>
     </li>
   ));
 
