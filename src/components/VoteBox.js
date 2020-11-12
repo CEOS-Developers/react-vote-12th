@@ -17,10 +17,22 @@ export default function VoteBox() {
     fetchVoteData();
   }, []);
 
+  const handleVoteButton = (id) => {
+    const nextVoteDataList = voteDataList.map((data, index) => {
+      if (data.id !== id) return data;
+      return {
+        ...data,
+        voteCount: data.voteCount + 1,
+      };
+    });
+    setVoteDataList(nextVoteDataList);
+  };
+
   console.log(voteDataList);
   const newVoteDataList = voteDataList.map((data, index) => (
     <li key={data.id}>
-      {index + 1}위: {data.name} [{data.voteCount}표] <button>투표</button>
+      {index + 1}위: {data.name} [{data.voteCount}표]{" "}
+      <button onClick={() => handleVoteButton(data.id)}>투표</button>
     </li>
   ));
 
