@@ -2,11 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
-export default function VoteCell(props) {
-  const { index, person, vote } = props;
+export default function VoteCell({ rank, person }) {
   const { id, name, voteCount } = person;
 
-  const voteToCandidate = () => {
+  const handleVoteCount = () => {
     // GET , VOTE
     axios({
       method: 'get',
@@ -19,7 +18,6 @@ export default function VoteCell(props) {
         switch (status) {
           case 200:
             alert(`${name}에게 투표 완료`);
-            vote();
             break;
           case 400:
             alert('권한 없음');
@@ -38,11 +36,11 @@ export default function VoteCell(props) {
 
   return (
     <Wrapper>
-      <Ranking>{index + 1}위:</Ranking>
+      <Ranking>{rank + 1}위:</Ranking>
       <Name>
         {name} [{voteCount}]
       </Name>
-      <CompleteButton onClick={voteToCandidate}>투표하기</CompleteButton>
+      <CompleteButton onClick={handleVoteCount}>투표하기</CompleteButton>
     </Wrapper>
   );
 }

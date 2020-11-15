@@ -12,7 +12,6 @@ export default function VotePage() {
     const response = await axios({
       method: 'get',
       url: 'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/candidates',
-      responseType: 'stream',
     });
 
     const { status, data } = response;
@@ -20,9 +19,7 @@ export default function VotePage() {
     switch (status) {
       case 200:
         // 투표순위대로 정렬
-        data.sort((a, b) => {
-          return b.voteCount - a.voteCount;
-        });
+        data.sort((a, b) => b.voteCount - a.voteCount);
         setCandidates(data);
         break;
       case 400:
@@ -41,7 +38,7 @@ export default function VotePage() {
   });
 
   const candidatesList = candidates.map((person, index) => {
-    return <VoteCell key={index} vote={getCandidates} {...{ index }} {...{ person }} />;
+    return <VoteCell {...{ key: index, rank: index, ...{ person } }} />;
   });
 
   return (
@@ -62,7 +59,6 @@ const Wrapper = styled.div`
 
 const Title = styled.h3`
   margin: 0;
-  padding: 0;
 
   padding: 20px 10px;
 
@@ -75,7 +71,6 @@ const RedColor = styled.span`
   font-size: 22px;
 `;
 const SubTitle = styled.h5`
-  margin: 0;
   padding: 0;
 
   margin: 0 10px;
