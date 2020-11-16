@@ -4,21 +4,14 @@ import styled from "styled-components";
 export default function VoteBox() {
   const [voteDataList, setVoteDataList] = useState([]);
 
-  const sortVoteDataList = (dataList) => {
-    const returnDataList = dataList
-      .concat()
-      .sort((a, b) => (a.voteCount > b.voteCount ? -1 : 1));
-    return returnDataList;
-  };
-
   useEffect(() => {
     const fetchVoteData = async () => {
       try {
-        const response = await axios.get(
+        const { data } = await axios.get(
           "http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/candidates"
         );
-        const initialVoteDataList = sortVoteDataList(response.data);
-        setVoteDataList(initialVoteDataList);
+        data.sort((a, b) => b.voteCount - a.voteCount);
+        setVoteDataList(data);
       } catch (e) {
         console.log(e);
       }
@@ -26,22 +19,20 @@ export default function VoteBox() {
     fetchVoteData();
   }, []);
 
-  const sendVoteResult = async (id, name) => {
-    try {
-      const response = await axios.get(
+  const handleVoteCount = async (id, name) => {
+    await axios
+      .get(
         `http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/vote?id=${id}`
-      );
-      //아 get으로도 보내는건가..? post를 안써도 되는거야?
-      if (response) {
+      )
+      .then((response) => {
+        console.log(response);
         alert(`${name}님께 투표 완료!`);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("투표 실패!");
+      });
 
-  const handleVoteButton = (id, name) => {
-    sendVoteResult(id, name);
     const nextVoteDataList = voteDataList.map((data, index) => {
       if (data.id !== id) return data;
       return {
@@ -50,21 +41,22 @@ export default function VoteBox() {
       };
     });
 
-    const sortedVoteDataList = sortVoteDataList(nextVoteDataList);
+    nextVoteDataList.sort((a, b) => b.voteCount - a.voteCount);
 
-    setVoteDataList(sortedVoteDataList);
+    setVoteDataList(nextVoteDataList);
   };
 
-  const newVoteDataList = voteDataList.map((data, index) => (
-    <VoteDataWrapper>
-      <VoteDataList key={data.id}>
-        {index + 1}위: {data.name} [{data.voteCount}표]{" "}
-      </VoteDataList>
-      <VoteButton onClick={() => handleVoteButton(data.id, data.name)}>
-        투표
-      </VoteButton>
-    </VoteDataWrapper>
-  ));
+  const newVoteDataList = voteDataList.map((data, index) => {
+    const { id, voteCount, name } = data;
+    return (
+      <VoteDataWrapper key={id}>
+        <VoteDataList>
+          {index + 1}위: {name} [{voteCount}표]{" "}
+        </VoteDataList>
+        <VoteButton onClick={() => handleVoteCount(id, name)}>투표</VoteButton>
+      </VoteDataWrapper>
+    );
+  });
 
   return (
     <div>
