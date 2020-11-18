@@ -1,37 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Candidate from './Candidate';
 import axios from 'axios';
+
+import Candidate from './Candidate';
 import { url } from './url';
 
 const CandidateBox = () => {
-  const [voteCandidate, setVoteCandidate] = useState('');
+  const [candidateList, setCandidateList] = useState('');
   const getCandidates = async () => {
     try {
-      const Candidates = await axios.get(`${url}/candidates`);
-      setVoteCandidate(Candidates.data);
+      const { data } = await axios.get(`${url}/candidates`);
+      setCandidateList(data);
     } catch (e) {
       console.error(e);
     }
   };
+
   useEffect(() => {
     getCandidates();
   }, []);
 
   return (
     <Wrapper>
-      {voteCandidate &&
-        voteCandidate
+      {candidateList &&
+        candidateList
           .sort((a, b) => {
             return b.voteCount - a.voteCount;
           })
-          .map((c, index) => {
+          .map((candidate, index) => {
             return (
               <Candidate
                 key={index}
-                id={c.id}
-                candidateName={c.name}
-                voteCount={c.voteCount}
+                id={candidate.id}
+                candidateName={candidate.name}
+                voteCount={candidate.voteCount}
                 getCandidates={getCandidates}
               />
             );
