@@ -1,8 +1,17 @@
 import React from 'react';
-import VoteContainer from './components/VoteContainer';
+import styled from 'styled-components';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import VotePage from './components/pages/VotePage';
 
 function App() {
-  return <VoteContainer />;
+  return (
+    <Wrapper>
+      <Router>
+        <VotePage />
+      </Router>
+    </Wrapper>
+  );
 }
 
 export default App;
+const Wrapper = styled.div``;
