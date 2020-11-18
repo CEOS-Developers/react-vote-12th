@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import { url } from './url';
 import axios from 'axios';
+
+import { url } from './url';
 
 const Candidate = ({ candidateName, voteCount, id, getCandidates }) => {
   const getVote = async (id) => {
     try {
-      const vote = await axios.get(`${url}/vote`, {
+      await axios.get(`${url}/vote`, {
         params: {
           id: id,
         },
@@ -17,14 +18,14 @@ const Candidate = ({ candidateName, voteCount, id, getCandidates }) => {
     }
   };
 
-  const onClick = () => {
+  const handleVoteCount = () => {
     getVote(id);
   };
   return (
     <Wrapper>
       <CandidateName>{candidateName}</CandidateName>
       <VoteCount>{voteCount}</VoteCount>
-      <VoteButton onClick={onClick}>투표</VoteButton>
+      <VoteButton onClick={handleVoteCount}>투표</VoteButton>
     </Wrapper>
   );
 };
