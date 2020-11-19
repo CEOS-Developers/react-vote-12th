@@ -32,7 +32,7 @@ export default function VotePage() {
 
   useEffect(() => {
     getCandidates(setCandidates);
-    cookies.token === 'undefined' ? setIsLoggedIn(false) : setIsLoggedIn(true);
+    cookies.token && cookies.token === 'undefined' ? setIsLoggedIn(false) : setIsLoggedIn(true);
   });
 
   const candidatesList = candidates.map((person, index) => {
