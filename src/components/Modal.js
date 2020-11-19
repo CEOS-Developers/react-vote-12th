@@ -43,6 +43,9 @@ export default function Modal({ isOpen, close }) {
           <Wrapper
             onClick={() => {
               setIsSignUp(false);
+              setEmail('');
+              setPassword('');
+              setName('');
               close();
             }}
           />

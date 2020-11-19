@@ -21,5 +21,19 @@ export default function postLogin(email, password, close, setCookie) {
     .catch((err) => {
       // Error 처리 하는 부분
       const statusCode = parseInt(`${err}`.split(' ').pop());
+
+      switch (statusCode) {
+        case 400:
+          alert('전부 입력해주세요.');
+          break;
+        case 404:
+          alert('이메일이 없습니다.');
+          break;
+        case 500:
+          alert('server error');
+          break;
+        default:
+          break;
+      }
     });
 }
