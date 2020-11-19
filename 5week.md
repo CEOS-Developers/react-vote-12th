@@ -12,7 +12,7 @@
 
 - **회원가입화면**
 
-  <img src="https://user-images.githubusercontent.com/56102421/99676344-b6429580-2abb-11eb-8d75-aad0fcbec139.png" width="90%" />
+  <img src="https://user-images.githubusercontent.com/56102421/99678980-c314b880-2abe-11eb-9179-ec70e83b7570.png" width="90%" />
 
 - **로그인 한 후 화면**
 
