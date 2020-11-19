@@ -3,10 +3,15 @@ import styled from 'styled-components';
 import axios from 'axios';
 
 import VoteCell from '../components/VoteCell';
+import Modal from '../components/Modal';
 
 export default function VotePage() {
   const [candidates, setCandidates] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const closeModal = () => {
+    setIsModalOpen(true);
+  };
   async function getCandidates() {
     // GET, Candidates
     const response = await axios({
@@ -49,6 +54,7 @@ export default function VotePage() {
       <SubTitle>CEOS 프론트엔드 13기 개발팀장 투표 창입니다.</SubTitle>
 
       <VoteBox>{candidatesList}</VoteBox>
+      <Modal isOpen={isModalOpen} close={closeModal} />
     </Wrapper>
   );
 }

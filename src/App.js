@@ -8,7 +8,7 @@ export default function App() {
   return (
     <Wrapper>
       <VotePage />
-      <Modal />
+      {/* <Modal /> */}
     </Wrapper>
   );
 }
