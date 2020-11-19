@@ -3,9 +3,11 @@ import styled from 'styled-components';
 import qs from 'querystring';
 import axios from 'axios';
 
-export default function Modal({ isOpen }) {
+export default function Modal({ isOpen, close }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [isSignup, setIsSignUp] = useState(false);
 
   const handleEmailChanged = (event) => {
     setEmail(event.target.value);
@@ -15,10 +17,17 @@ export default function Modal({ isOpen }) {
     setPassword(event.target.value);
   };
 
+  const handleNameChanged = (event) => {
+    setName(event.target.value);
+  };
+
   /**
    * user@test.com
    * secret
    */
+  const handleGoToSignupButton = () => {
+    isSignup ? setIsSignUp(false) : setIsSignUp(true);
+  };
 
   const handleClickLoginButton = () => {
     axios({
@@ -44,21 +53,29 @@ export default function Modal({ isOpen }) {
   return (
     <>
       {isOpen && (
-        <Wrapper>
-          <ModalPage>
-            <TextField value={email} onChange={handleEmailChanged} placeholder="아이디를 입력해주세요." />
-            <TextField
-              type="password"
-              value={password}
-              onChange={handlePasswordChanged}
-              placeholder="비밀번호를 입력해주세요."
-            />
-            <HStack>
-              <GoToSignupButton>계정 만들기</GoToSignupButton>
-              <LoginButton onClick={handleClickLoginButton}>로그인</LoginButton>
-            </HStack>
-          </ModalPage>
-        </Wrapper>
+        <>
+          <Wrapper onClick={close} />
+          <>
+            <ModalPage>
+              <TextField value={email} onChange={handleEmailChanged} placeholder="아이디를 입력해주세요." />
+              {isSignup && (
+                <TextField
+                  type="password"
+                  value={password}
+                  onChange={handlePasswordChanged}
+                  placeholder="비밀번호를 입력해주세요."
+                />
+              )}
+              <TextField value={name} onChange={handleNameChanged} placeholder="이름을 입력해주세요." />
+              <HStack>
+                <GoToSignupButton onClick={handleGoToSignupButton}>
+                  {isSignup ? '뒤로가기' : '계정 만들기'}
+                </GoToSignupButton>
+                <LoginButton onClick={handleClickLoginButton}>{isSignup ? '회원가입' : '로그인'}</LoginButton>
+              </HStack>
+            </ModalPage>
+          </>
+        </>
       )}
     </>
   );
@@ -113,14 +130,14 @@ const TextField = styled.input`
 
 const HStack = styled.div`
   width: 100%;
+  margin-top: 20px;
   display: flex;
   justify-content: center;
 `;
 
 const GoToSignupButton = styled.button`
   margin: 5px;
-  padding: 0 6px;
-  height: 40px;
+  padding: 8px 16px;
 
   background-color: black;
   color: white;
@@ -138,8 +155,7 @@ const GoToSignupButton = styled.button`
 
 const LoginButton = styled.button`
   margin: 5px;
-  padding: 0 6px;
-  height: 40px;
+  padding: 8px 16px;
 
   background-color: black;
   color: white;
