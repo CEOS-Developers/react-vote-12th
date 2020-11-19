@@ -9,7 +9,7 @@ import getCandidates from '../service/getCandidates';
 export default function VotePage() {
   const [candidates, setCandidates] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const closeModal = () => {
     setIsModalOpen(false);
   };
@@ -18,8 +18,17 @@ export default function VotePage() {
     setIsModalOpen(true);
   };
 
+  const logout = () => {
+    localStorage.removeItem('token');
+  };
+
+  const handleAuthButton = () => {
+    isLoggedIn ? logout() : openModal();
+  };
+
   useEffect(() => {
     getCandidates(setCandidates);
+    JSON.parse(localStorage.getItem('token')) ? setIsLoggedIn(true) : setIsLoggedIn(false);
   });
 
   const candidatesList = candidates.map((person, index) => {
@@ -34,7 +43,7 @@ export default function VotePage() {
       <SubTitle>CEOS 프론트엔드 13기 개발팀장 투표 창입니다.</SubTitle>
 
       <VoteBox>{candidatesList}</VoteBox>
-      {!JSON.parse(localStorage.getItem('token')) && <LoginButton onClick={openModal}>로그인 하러가기</LoginButton>}
+      <AuthButton onClick={handleAuthButton}>{isLoggedIn ? '로그아웃' : '로그인'}</AuthButton>
       <Modal isOpen={isModalOpen} close={closeModal} />
     </Wrapper>
   );
@@ -72,7 +81,7 @@ const VoteBox = styled.div`
   box-shadow: 0 4px 8px 0 rgba(69, 111, 128, 0.25);
 `;
 
-const LoginButton = styled.div`
+const AuthButton = styled.div`
   outline: none;
   border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 25px;
