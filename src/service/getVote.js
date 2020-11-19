@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export default async function getVote(id, name) {
+export default async function getVote(id, name, setIsModalOpen) {
   axios({
     method: 'get',
     url: `http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/vote?id=${id}`,
@@ -17,6 +17,7 @@ export default async function getVote(id, name) {
 
       switch (statusCode) {
         case 401:
+          setIsModalOpen(true);
           alert('로그인해주세요');
           break;
         case 500:

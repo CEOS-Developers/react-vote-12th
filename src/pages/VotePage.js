@@ -5,6 +5,7 @@ import VoteCell from '../components/VoteCell';
 import Modal from '../components/Modal';
 
 import getCandidates from '../service/getCandidates';
+
 export default function VotePage() {
   const [candidates, setCandidates] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,7 +23,7 @@ export default function VotePage() {
   });
 
   const candidatesList = candidates.map((person, index) => {
-    return <VoteCell {...{ key: index, rank: index, ...{ person } }} />;
+    return <VoteCell {...{ key: index, rank: index, ...{ person }, setIsModalOpen }} />;
   });
 
   return (

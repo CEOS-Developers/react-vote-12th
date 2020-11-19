@@ -26,6 +26,9 @@ export default function postLogin(email, password, close) {
         case 400:
           alert('전부 입력해주세요.');
           break;
+        case 404:
+          alert('이메일이 없습니다.');
+          break;
         case 500:
           alert('server error');
           break;

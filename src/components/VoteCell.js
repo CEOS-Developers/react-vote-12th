@@ -3,11 +3,11 @@ import styled from 'styled-components';
 
 import getVote from '../service/getVote';
 
-export default function VoteCell({ rank, person }) {
+export default function VoteCell({ rank, person, setIsModalOpen }) {
   const { id, name, voteCount } = person;
 
   const handleVoteCount = () => {
-    getVote(id, name);
+    getVote(id, name, setIsModalOpen);
   };
 
   return (

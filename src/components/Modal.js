@@ -38,7 +38,12 @@ export default function Modal({ isOpen, close }) {
     <>
       {isOpen && (
         <>
-          <Wrapper onClick={close} />
+          <Wrapper
+            onClick={() => {
+              setIsSignUp(false);
+              close();
+            }}
+          />
           <>
             <ModalPage>
               <TextField value={email} onChange={handleEmailChanged} placeholder="이메일를 입력해주세요." />
