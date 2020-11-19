@@ -5,32 +5,29 @@ import axios from 'axios';
 export default function VoteCell({ rank, person }) {
   const { id, name, voteCount } = person;
 
-  const handleVoteCount = () => {
+  const handleVoteCount = async () => {
     // GET , VOTE
     axios({
       method: 'get',
-      url: `http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/vote?id=${id}`,
-      responseType: 'stream',
+      url: `http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/vote?id=${id}`,
     })
-      .then((response) => {
-        const { status } = response;
-        console.log(status);
-        switch (status) {
-          case 200:
-            alert(`${name}에게 투표 완료`);
-            break;
-          case 400:
-            alert('권한 없음');
+      .then(() => {
+        alert(`${name}에게 투표 완료`);
+      })
+      .catch((err) => {
+        // Error 처리 하는 부분
+        const statusCode = parseInt(`${err}`.split(' ').pop());
+
+        switch (statusCode) {
+          case 401:
+            alert('로그인해주세요');
             break;
           case 500:
-            alert('서버 오류');
+            alert('server error');
             break;
           default:
             break;
         }
-      })
-      .catch((err) => {
-        console.log(`Error: ${err}`);
       });
   };
 

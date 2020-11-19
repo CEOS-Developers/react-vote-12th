@@ -2,11 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 
 import VotePage from './pages/VotePage';
+import Modal from './components/Modal';
 
 export default function App() {
   return (
     <Wrapper>
       <VotePage />
+      <Modal />
     </Wrapper>
   );
 }

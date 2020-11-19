@@ -11,7 +11,7 @@ export default function VotePage() {
     // GET, Candidates
     const response = await axios({
       method: 'get',
-      url: 'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/candidates',
+      url: 'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/candidates',
     });
 
     const { status, data } = response;
