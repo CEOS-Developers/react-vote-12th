@@ -34,7 +34,7 @@ export default function VotePage() {
       <SubTitle>CEOS 프론트엔드 13기 개발팀장 투표 창입니다.</SubTitle>
 
       <VoteBox>{candidatesList}</VoteBox>
-      <LoginButton onClick={openModal}>로그인 하러가기</LoginButton>
+      {!JSON.parse(localStorage.getItem('token')) && <LoginButton onClick={openModal}>로그인 하러가기</LoginButton>}
       <Modal isOpen={isModalOpen} close={closeModal} />
     </Wrapper>
   );
