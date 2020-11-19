@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-export default async function getVote(id, name, setIsModalOpen) {
+export default async function getVote(id, name, setIsModalOpen, cookies) {
   axios({
     method: 'get',
     url: `http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/vote?id=${id}`,
     headers: {
-      Authorization: JSON.parse(localStorage.getItem('token')),
+      Authorization: cookies.token,
     },
   })
     .then(() => {

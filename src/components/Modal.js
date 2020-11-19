@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useCookies } from 'react-cookie';
 
 import postLogin from '../service/postLogin';
 import postSignUp from '../service/postSignup';
@@ -9,6 +10,7 @@ export default function Modal({ isOpen, close }) {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [isSignup, setIsSignUp] = useState(false);
+  const [cookies, setCookie] = useCookies(['token']);
 
   const handleEmailChanged = (event) => {
     setEmail(event.target.value);
@@ -31,7 +33,7 @@ export default function Modal({ isOpen, close }) {
   };
 
   const handleClickCheckButton = () => {
-    isSignup ? postSignUp(email, password, name, setIsSignUp) : postLogin(email, password, close);
+    isSignup ? postSignUp(email, password, name, setIsSignUp) : postLogin(email, password, close, setCookie);
   };
 
   return (

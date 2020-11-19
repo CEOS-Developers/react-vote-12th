@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useCookies } from 'react-cookie';
 
 import VoteCell from '../components/VoteCell';
 import Modal from '../components/Modal';
@@ -10,6 +11,8 @@ export default function VotePage() {
   const [candidates, setCandidates] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [cookies, removeCookie] = useCookies(['token']);
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
@@ -19,7 +22,8 @@ export default function VotePage() {
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
+    removeCookie('token');
+    setIsLoggedIn(false);
   };
 
   const handleAuthButton = () => {
@@ -28,11 +32,11 @@ export default function VotePage() {
 
   useEffect(() => {
     getCandidates(setCandidates);
-    JSON.parse(localStorage.getItem('token')) ? setIsLoggedIn(true) : setIsLoggedIn(false);
+    cookies.token === 'undefined' ? setIsLoggedIn(false) : setIsLoggedIn(true);
   });
 
   const candidatesList = candidates.map((person, index) => {
-    return <VoteCell {...{ key: index, rank: index, ...{ person }, setIsModalOpen }} />;
+    return <VoteCell {...{ key: index, rank: index, ...{ person }, setIsModalOpen, cookies }} />;
   });
 
   return (
