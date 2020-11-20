@@ -1,12 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-
+const voteURL = 'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/vote';
 function CandidateCard({candidate, index}) {
     const handleVoteCount= (candidate)=> {
-        axios.get(
-             `http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/vote?id=${candidate.id}` 
-         )
+        axios.get(`${voteURL}?id=${candidate.id}`)
          .then (()=>{
              alert(candidate.name + '님에게 투표 완료!');
          })
@@ -55,5 +53,8 @@ const VoteButton = styled.button`
     &:hover{
         color: white;
         background-color: skyblue;
+    }
+    &:focus{
+        outline: none;
     }
 `;
