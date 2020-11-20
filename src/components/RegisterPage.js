@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-// import { browserHistory } from "react-router-dom";
 import axios from "axios";
-import styled from "styled-components";
 import qs from "qs";
 import { useHistory } from "react-router-dom";
+import { Form, Input, Button } from "./styles/element";
 export default function RegisterPage(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,24 +27,24 @@ export default function RegisterPage(props) {
 
   const handleRegister = async (event) => {
     event.preventDefault();
-    const loginData = {
+    const inputData = {
       email,
       password,
       name,
     };
-    const loginOption = {
+    const dataToSend = {
       method: "POST",
       headers: { "content-type": "application/x-www-form-urlencoded" },
-      data: qs.stringify(loginData),
+      data: qs.stringify(inputData),
       url:
         "http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/auth/signup",
     };
 
-    await axios(loginOption).then((res) => {
+    await axios(dataToSend).then((res) => {
       if (res.status === 201) {
         alert("회원가입 성공!");
         console.log(res);
-        history.push("/vote");
+        history.push("/login");
       } else {
         //실패하면 그냥 에러가 뜬다... ㅠㅠ
         alert("회원가입 실패!");
@@ -71,33 +70,3 @@ export default function RegisterPage(props) {
     </div>
   );
 }
-
-const Form = styled.form`
-  width: 200px;
-  height: 300px;
-
-  display: flex;
-  flex-direction: column;
-`;
-
-const Input = styled.input`
-  width: 180px;
-  height: 50px;
-  border: none;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  &:focus {
-    outline: none;
-  }
-  margin: 20px;
-`;
-const Button = styled.button`
-  width: 70px;
-  height: 50px;
-  border-radius: 10px;
-  background-color: pink;
-  margin-left: 20px;
-  border: none;
-  &:focus {
-    outline: none;
-  }
-`;
