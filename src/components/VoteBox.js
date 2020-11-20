@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import qs from "qs";
 export default function VoteBox() {
   const [voteDataList, setVoteDataList] = useState([]);
 
@@ -8,7 +9,7 @@ export default function VoteBox() {
     const fetchVoteData = async () => {
       try {
         const { data } = await axios.get(
-          "http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/candidates"
+          "http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/candidates"
         );
         data.sort((a, b) => b.voteCount - a.voteCount);
         setVoteDataList(data);
@@ -22,7 +23,7 @@ export default function VoteBox() {
   const handleVoteCount = async (id, name) => {
     await axios
       .get(
-        `http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/vote?id=${id}`
+        `http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/vote?id=${id}`
       )
       .then((response) => {
         console.log(response);
