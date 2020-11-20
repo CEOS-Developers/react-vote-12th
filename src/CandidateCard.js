@@ -3,14 +3,14 @@ import styled from 'styled-components';
 import axios from 'axios';
 
 function CandidateCard({candidate, index}) {
-    const handleVoteCount= async (candidate)=> {
-        await axios.get(
+    const handleVoteCount= (candidate)=> {
+        axios.get(
              `http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/vote?id=${candidate.id}` 
          )
-         .then ((response)=>{
+         .then (()=>{
              alert(candidate.name + '님에게 투표 완료!');
          })
-         .catch ((error)=> {
+         .catch (()=> {
              alert('투표 실패');
          });
     }

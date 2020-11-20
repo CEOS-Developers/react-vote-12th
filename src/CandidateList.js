@@ -2,13 +2,11 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import CandidateCard from './CandidateCard';
-
+const dataURL = 'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/candidates';
 function CandidateList() {
     const [candidates, setCandidates] = useState(null);
     async function getCandidates() {
-        const { data } = await axios.get(
-            'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/candidates'
-        );
+        const { data } = await axios.get(dataURL);
         setCandidates(data);
     }
     useEffect(() => {
