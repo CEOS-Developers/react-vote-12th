@@ -1,16 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-const voteURL = 'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/vote';
-function CandidateCard({candidate, index}) {
+const voteURL = 'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/vote';
+function CandidateCard({candidate, index, cookies}) {
     const handleVoteCount= (candidate)=> {
-        axios.get(`${voteURL}?id=${candidate.id}`)
-         .then (()=>{
-             alert(candidate.name + '님에게 투표 완료!');
-         })
-         .catch (()=> {
-             alert('투표 실패');
-         });
+        axios({
+            method: 'get', url: `${voteURL}?id=${candidate.id}`,
+            headers: {
+                Authorization: cookies.token
+            }
+        })
+        .then (() => {
+            alert(candidate.name + '님에게 투표 완료!');
+        })
+        .catch (() => {
+            alert('투표 실패');
+        })
     }
     return(    
         <EachCandidate>

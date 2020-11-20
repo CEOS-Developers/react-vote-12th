@@ -55,7 +55,7 @@ function CandidateList() {
                     .sort((c1,c2) => c2.voteCount - c1.voteCount)
                     .map((candidate, index) => {
                         return(
-                            <CandidateCard {...{candidate, index}}/>
+                            <CandidateCard {...{candidate, index, cookies}}/>
                         );
                     })}
                 </ShowingPage>
