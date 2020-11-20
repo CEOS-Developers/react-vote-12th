@@ -4,11 +4,14 @@ import axios from 'axios';
 import CandidateCard from './CandidateCard';
 import { useCookies } from 'react-cookie';
 import LoginPage from './LoginPage';
+import SignUpPage from './SignUpPage';
 const dataURL = 'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/candidates';
 function CandidateList() {
     const [candidates, setCandidates] = useState(null);
     const [isLogIn, setIsLogIn] = useState(false);
+    const [isSignUpFinished, setIsSignUpFinished] = useState(false);
     const [isLogInPage, setIsLogInPage] = useState(false);
+    const [isSignUpPage, setIsSignUpPage] = useState(false);
     const [cookies, removeCookie] = useCookies(['token']);
     async function getCandidates() {
         const { data } = await axios.get(dataURL);
@@ -19,13 +22,20 @@ function CandidateList() {
             removeCookie('token');
             setIsLogIn(false);
             setIsLogInPage(false);
+            setIsSignUpPage(false);
         }
         else {
             setIsLogInPage(true);
+            setIsSignUpPage(false);
         }
     }
     const handleShowResultButtonClick = () => {
         setIsLogInPage(false);
+        setIsSignUpPage(false);
+    }
+    const handleSignUpButtonClick = () => {
+        setIsLogInPage(false);
+        setIsSignUpPage(true);
     }
     useEffect(() => {
         getCandidates();
@@ -40,26 +50,32 @@ function CandidateList() {
                 <LogInOutButton onClick={handleLogInOutButtonClick}>
                     {isLogIn ? '로그아웃' : '로그인'}
                 </LogInOutButton>
-                <SignUpButton>회원가입</SignUpButton>
+                <SignUpButton onClick={handleSignUpButtonClick}>회원가입</SignUpButton>
             </ButtonsWrapper>
             <>
-            { isLogInPage && !isLogIn ? (
+            { isLogInPage && !isLogIn &&
                 <ShowingPage>
                     <LoginPage/>
                 </ShowingPage>
-            ) : (
+            }
+            { isSignUpPage && !isSignUpFinished &&
                 <ShowingPage>
-                    {
-                    candidates &&
-                    candidates
-                    .sort((c1,c2) => c2.voteCount - c1.voteCount)
-                    .map((candidate, index) => {
-                        return(
-                            <CandidateCard {...{candidate, index, cookies}}/>
-                        );
-                    })}
+                    <SignUpPage {...{setIsSignUpFinished}}/>
                 </ShowingPage>
-            )}
+            }
+            { (!isLogInPage || isLogIn) && (!isSignUpPage || isSignUpFinished) &&
+                <ShowingPage>
+                {
+                candidates &&
+                candidates
+                .sort((c1,c2) => c2.voteCount - c1.voteCount)
+                .map((candidate, index) => {
+                    return(
+                        <CandidateCard {...{candidate, index, cookies}}/>
+                    );
+                })}
+            </ShowingPage>
+            }
             </>
         </Wrapper>
     );
