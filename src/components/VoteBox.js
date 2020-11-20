@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import qs from "qs";
 export default function VoteBox() {
   const [voteDataList, setVoteDataList] = useState([]);
 
@@ -61,6 +60,7 @@ export default function VoteBox() {
 
   return (
     <div>
+      <h1 style={{ color: "red" }}> 13기 프론트엔드 개발팀장은 누구!?</h1>
       <ul>{newVoteDataList}</ul>
     </div>
   );
