@@ -3,24 +3,28 @@ import styled from 'styled-components';
 import axios from 'axios';
 
 
-const CandidateStatus = ({ candidate, order }) => {
+const CandidateStatus = ({ candidate, order,cookies }) => {
   const { id, name, voteCount } = candidate;
   const [vote, setVote] = useState(null);
 
+ 
   const onClickVote = () => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/vote?id=${id}`
-        );
-      } catch (e) {
-        console.log(e);
-        alert(name + '님에게 투표실패ㅠㅠ');
-      }
-      alert(name + '님에게 투표성공!');
+    const options = {
+      method: 'GET',
+      headers: { Authorization: cookies.token },
+      url:`http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/vote?id=${id}`
     };
-    fetchData();
-  };
+    axios(options)
+      .then((res) => {
+        alert('튜포성공');
+      })
+      .catch((err) => {
+        alert('튜포실패 ');
+        console.log('vote error!!', err);
+      });
+      
+    };
+ 
 
   const orderMark = () => {
     let mark = '';
