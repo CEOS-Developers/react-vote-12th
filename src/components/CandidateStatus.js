@@ -12,8 +12,11 @@ const CandidateStatus = ({ candidate, order,cookies }) => {
     const options = {
       method: 'GET',
       headers: { Authorization: cookies.token },
+     
       url:`http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/vote?id=${id}`
     };
+    console.log("cookies",cookies);
+    console.log("c token",cookies.token)
     axios(options)
       .then((res) => {
         alert('튜포성공');
