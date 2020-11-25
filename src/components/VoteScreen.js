@@ -6,6 +6,7 @@ import CandidateStatus from './CandidateStatus.js';
 import LoginInput from './LoginInput';
 import { useCookies } from 'react-cookie';
 
+const candiadateURL='http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/candidates'
 export default function VoteScreen() {
   const [candidates, setCandidates] = useState(null);
   const [cookies, removeCookie] = useCookies(['token']);
@@ -14,7 +15,7 @@ export default function VoteScreen() {
     const getCandidateList = async () => {
       try {
         const response = await axios.get(
-          'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/candidates'
+          candiadateURL
         );
         setCandidates(response.data);
        

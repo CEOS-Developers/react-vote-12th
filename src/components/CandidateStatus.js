@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { votes } from '../axios/auth';
 
 
 const CandidateStatus = ({ candidate, order,cookies }) => {
@@ -9,23 +10,7 @@ const CandidateStatus = ({ candidate, order,cookies }) => {
 
  
   const onClickVote = () => {
-    const options = {
-      method: 'GET',
-      headers: { Authorization: cookies.token },
-     
-      url:`http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/vote?id=${id}`
-    };
-    console.log("cookies",cookies);
-    console.log("c token",cookies.token)
-    axios(options)
-      .then((res) => {
-        alert('튜포성공');
-      })
-      .catch((err) => {
-        alert('튜포실패 ');
-        console.log('vote error!!', err);
-      });
-      
+    votes(cookies,id);
     };
  
 
