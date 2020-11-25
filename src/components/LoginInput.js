@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
-//import {login,shit} from '../axios/auth'
+import {login} from '../axios/auth'
 import { useCookies } from 'react-cookie';
-import qs from 'qs';
+
 
 const LoginInput=({history})=> {
 
@@ -20,60 +19,23 @@ const LoginInput=({history})=> {
     setPassword(e.target.value);
   };
 
-  const login=()=>{
-    const options = {
-      method: 'POST',
-      headers: { 'content-type': 'application/x-www-form-urlencoded' ,
-      //'Access-Control-Allow-Credentials':true
-    },
-    credentials: 'same-origin',
-      data: qs.stringify({
-        email: `${email}`,
-        password: `${password}`,
-      
-      }),
-      url:`http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/auth/login`,
-     
-    };
-    axios(options)
-      .then((res) => {
-        alert('로그인을 축하드립니다');
-        //console.log("json",JSON.stringify(res.data));
-  
-        //set('token',JSON.stringify(res.data),{path:'/'});
-        //return JSON.stringify(res.data);
-        setCookie('token',JSON.stringify(res.data),{path:'/'});
-          
-      })
-      .catch((err) => {
-        console.log('login error!!', err);
-      });
-  }
-  
   const onClickLoginButton=(e)=>{
     e.preventDefault();
     if(isLogin){//true, 로그아웃버튼클릭
-      //removeCookie('token');
+      removeCookie('token');
       setIsLogin(false);
       setEmail("");
       setPassword("")
     }else{
-      console.log('로그인 요청',cookies)
-     login();
-      
+      login(email, password,setCookie);
       setIsLogin(true);
-  
-      console.log("in login",cookies);
     }
- 
-   
-
   }
 
 
   return (
     <Wrapper>
-      <h2>{isLogin?'':'If you don\'t have account, please SignUP'}</h2>
+      <h2>{isLogin?'Plz vote':'If you don\'t have account, please SignUP'}</h2>
       <LoginLine>
           <IDInput
             type='text'

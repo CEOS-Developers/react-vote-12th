@@ -17,12 +17,12 @@ export default function VoteScreen() {
           'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/candidates'
         );
         setCandidates(response.data);
+       
       } catch (e) {
         console.log(e);
       }
     };
     getCandidateList();
-  
   }, [candidates]);
 
   if (!candidates) {
@@ -35,7 +35,7 @@ export default function VoteScreen() {
     <Wrapper>
       <Intro>CEOS 프론트앤드 13기 개발팀장을 뽑자 🎉</Intro>
       <LoginInput></LoginInput>
-      {candidates.map((candidate, index,cookies) => {
+      {candidates.map((candidate, index) => {
         return (
           <CandidateStatus
             key={candidate.id}

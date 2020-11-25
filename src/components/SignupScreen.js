@@ -28,19 +28,11 @@ const SignupScreen=({history})=> {
     setPasswordError(e.target.value !== password);
     setPasswordsCheck(e.target.value);
   };
-  console.log({
-    name,
-    email,
-    password,
-    passwordCheck,
-    passwordError,
-  });
 
   const onClickRegisterButton=(e)=>{
     e.preventDefault();
-    register(email,password,name)
+    register(email,password,name);
     history.push('/');
-
   }
 
   return (
@@ -65,8 +57,7 @@ const SignupScreen=({history})=> {
         name="passwordCheck"
         placeholder='VERIFY PWD'
         value={passwordCheck}
-        onChange={onChangePasswordCheck}
-        
+        onChange={onChangePasswordCheck}  
       ></PasswordVerifyingInput>
       {passwordError && <h5>비번이 일치해야함</h5>}
       <EmailInput
@@ -77,7 +68,6 @@ const SignupScreen=({history})=> {
         onChange={onChangeEmail}
       ></EmailInput>
       <SignUpButton onClick={onClickRegisterButton}>회원가입</SignUpButton>
-
     </Wrapper>
   );
 }
