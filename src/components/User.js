@@ -55,7 +55,7 @@ function User({ history }) {
 
   function logOut() {
     Cookies.remove('session');
-    history.pushState('/');
+    history.push('/');
   }
 
   return (
