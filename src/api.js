@@ -18,7 +18,7 @@ export const signUpAPI = async ({ email, password, name }) => {
     console.log('******Error: ', error);
     return { 
       'success': false,
-      'message': 'signUp Failed...'
+      'message': 'Email already exists.'
     }
   }
 };

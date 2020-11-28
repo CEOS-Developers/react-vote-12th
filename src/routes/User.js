@@ -2,22 +2,16 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Cookies from 'js-cookie';
-// import jwt_decode from 'jwt-decode';
 
-import Candidate from './Candidate';
+import Candidate from '../components/Candidate';
 
 function User({ history }) {
   const candidatesUrl = 'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/candidates';
   const voteUrl = `http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/vote?id=`;
   const [candidates, setCandidates] = useState([]);
   const [rerenderTrigger, setRerenderTrigger] = useState(true);
-//   const [email, setEmail] = useState('');
-//   const session = Cookies.get('session');
   let candidatesData = [];
   let sortedCandidates = [];
-
-//   const decode = jwt_decode(session);
-//   setEmail = 
 
   useEffect(() => {
     const getCandidate = async () => {
@@ -82,7 +76,6 @@ const Wrapper = styled.div`
 `;
 
 const LogOutButton = styled.button`
-
 `;
 
 

@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import Home from './components/Home';
-import SignUp from './components/SignUp';
-import SignIn from './components/SignIn';
-import User from './components/User';
+import Home from './routes/Home';
+import SignUp from './routes/SignUp';
+import SignIn from './routes/SignIn';
+import User from './routes/User';
 
 import Title from './components/Title';
 
@@ -13,7 +13,9 @@ function App() {
 
   return (
     <Wrapper>
-      <Title />
+      <Router>
+        <Title />
+      </Router>
       <Router>
         <Switch>
           <Route path="/signup" component={SignUp} />
