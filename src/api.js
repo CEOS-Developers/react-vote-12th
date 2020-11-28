@@ -25,13 +25,13 @@ export const signUpAPI = async ({ email, password, name }) => {
 
 
 export const signInAPI = async ({ email, password }) => {
-    const signUpUrl = 'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/auth/login';
+    const signInUrl = 'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/auth/login';
     const params = qs.stringify({
         'email': email,
         'password': password,
     });
     try {
-      const token = await axios.post(signUpUrl, params);
+      const token = await axios.post(signInUrl, params);
       axios.defaults.headers.common['Authorization'] = token.data;
       return {
         'success': true,
