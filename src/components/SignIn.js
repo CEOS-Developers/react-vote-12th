@@ -10,7 +10,8 @@ function SignIn({ history }) {
   const onSubmit = async ({ email, password }) => {
     const { success, token } = await signInAPI({ email, password });
     if (success) {
-      Cookies.set('session', token.split(' ')[1]);
+      Cookies.set('session', token);  // 쿠키에 토큰 저장하면 안되나요.
+      console.log(`success: ${success}, token: ${token}\n`);
       history.push('/user');
     }
   }

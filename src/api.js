@@ -32,9 +32,10 @@ export const signInAPI = async ({ email, password }) => {
     });
     try {
       const token = await axios.post(signUpUrl, params);
+      axios.defaults.headers.common['Authorization'] = token.data;
       return {
         'success': true,
-        'token': token
+        'token': token.data
       }
     } catch (error) {
       console.log('******Error: ', error);

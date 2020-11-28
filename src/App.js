@@ -8,8 +8,8 @@ import SignUp from './components/SignUp';
 import SignIn from './components/SignIn';
 import User from './components/User';
 
-import Title from './Title';
-import Candidate from './Candidate';
+import Title from './components/Title';
+import Candidate from './components/Candidate';
 
 function App() {
   const [candidates, setCandidates] = useState([]);
