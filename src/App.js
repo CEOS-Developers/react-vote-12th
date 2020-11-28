@@ -1,6 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
+import Home from './components/Home';
+import SignUp from './components/SignUp';
+import SignIn from './components/SignIn';
+import User from './components/User';
+
 import Title from './Title';
 import Candidate from './Candidate';
 
@@ -14,7 +21,7 @@ function App() {
     const getCandidate = async () => {
       try {
         const response = await axios.get(
-          'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/candidates'
+          'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/candidates'
         );
         candidatesData = response.data;
       } catch (e) {
@@ -38,7 +45,7 @@ function App() {
   async function vote(cid, name) {
     try {
       await axios.get(
-        `http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:2020/vote?id=${cid}`
+        `http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/vote?id=${cid}`
       );
       await alert(`${name}님에게 투표 완료 !!!`);
       await setRerenderTrigger(rerenderTrigger ? false : true);
@@ -51,12 +58,21 @@ function App() {
   return (
     <Wrapper>
       <Title />
-      <ul style={{listStyle: 'none', width: '100%'}}>
-        <li style={{width: '100%'}}>
-          {candidates.map((cand, i) => { return ( <Candidate name={cand.name} 
-          voteCount={cand.voteCount} cid={cand.id} rank={i} vote={vote} />)})}
-        </li>
-      </ul>
+      <Router>
+        <Switch>
+          <Route path="/signup" component={SignUp} />
+          <Route path="/signin" component={SignIn} />
+          <Route path="/user" component={User} />
+          <Route path="/" component={Home} />
+
+          <ul style={{listStyle: 'none', width: '100%'}}>
+            <li style={{width: '100%'}}>
+              {candidates.map((cand, i) => { return ( <Candidate name={cand.name} 
+              voteCount={cand.voteCount} cid={cand.id} rank={i} vote={vote} />)})}
+            </li>
+          </ul>
+        </Switch>
+      </Router>
     </Wrapper>
   );
 }
