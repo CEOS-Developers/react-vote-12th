@@ -1,10 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import { CookiesProvider } from "react-cookie";
+import { BrowserRouter } from "react-router-dom";
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  <BrowserRouter>
+    <CookiesProvider>
+      <App />
+    </CookiesProvider>
+  </BrowserRouter>,
+  document.getElementById("root")
 );
