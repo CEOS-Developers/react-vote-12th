@@ -8,9 +8,9 @@ import RegisterPage from "./components/RegisterPage";
 function App() {
   return (
     <Wrapper>
-      <Route path="/login" exact component={LoginPage} />
+      <Route path={["/login", "/"]} exact component={LoginPage} />
       <Route path="/vote" exact component={VoteBox} />
-      <Route path={["/", "/register"]} exact component={RegisterPage} />
+      <Route path="/register" exact component={RegisterPage} />
     </Wrapper>
   );
 }

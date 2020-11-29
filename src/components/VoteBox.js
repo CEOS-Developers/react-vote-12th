@@ -2,9 +2,13 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { useCookies } from "react-cookie";
+import { Button } from "./styles/element";
+import { useHistory } from "react-router-dom";
 export default function VoteBox() {
   const [voteDataList, setVoteDataList] = useState([]);
-  const [cookies, setCookie] = useCookies(["token"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+
+  const history = useHistory();
 
   useEffect(() => {
     const fetchVoteData = async () => {
@@ -65,10 +69,16 @@ export default function VoteBox() {
     );
   });
 
+  const handleLogOut = () => {
+    removeCookie("token");
+    history.push("/login");
+  };
+
   return (
     <div>
       <h1 style={{ color: "red" }}> 13기 프론트엔드 개발팀장은 누구!?</h1>
       <ul>{newVoteDataList}</ul>
+      <Button onClick={handleLogOut}>로그아웃</Button>
     </div>
   );
 }

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 import qs from "qs";
 import { useHistory } from "react-router-dom";
-import { Form, Input, Button } from "./styles/element";
+import { Form, Input, Button, Nav } from "./styles/element";
 import { useCookies } from "react-cookie";
-export default function LoginPage() {
+export default function LoginPage({ handleRegister }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -59,8 +61,15 @@ export default function LoginPage() {
           onChange={handlePasswordInput}
           type="password"
         />
-
-        <Button onClick={handleLogin}>로그인</Button>
+        <Nav>
+          <Button onClick={handleLogin}>로그인</Button>
+          <Button>
+            <Link to="/register">
+              새로운 <br />
+              계정생성
+            </Link>
+          </Button>
+        </Nav>
       </Form>
     </div>
   );

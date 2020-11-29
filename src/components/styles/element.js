@@ -29,3 +29,14 @@ export const Button = styled.button`
     outline: none;
   }
 `;
+
+export const Nav = styled.div`
+  display: flex;
+  justify-content: space-between;
+  a {
+    text-decoration: none;
+  }
+  a:active {
+    color: black;
+  }
+`;

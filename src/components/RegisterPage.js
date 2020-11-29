@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import qs from "qs";
+import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import { Form, Input, Button } from "./styles/element";
+import { Form, Input, Button, Nav } from "./styles/element";
 export default function RegisterPage(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -65,7 +66,16 @@ export default function RegisterPage(props) {
           type="password"
         />
         <Input placeholder="이름" onChange={handleNameInput} />
-        <Button onClick={handleRegister}>회원가입</Button>
+        <Nav>
+          <Button onClick={handleRegister}>회원가입</Button>
+          <Button>
+            <Link to="/login">
+              기존계정
+              <br />
+              로그인
+            </Link>
+          </Button>
+        </Nav>
       </Form>
     </div>
   );
