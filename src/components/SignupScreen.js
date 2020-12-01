@@ -96,7 +96,7 @@ const PasswordInput = styled.input`
   margin-top: 15px;
 `;
 
-const PasswordVerifyingInput = styled.input`
+const PasswordVerificationInput = styled.input`
   border: 1px solid rgba(0, 0, 0, 0.1);
   margin-right: 70%;
   padding: 5px;
