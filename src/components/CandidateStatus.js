@@ -33,7 +33,7 @@ const CandidateStatus = ({ candidate, order,cookies }) => {
       <Text>{order} </Text>
       <Text>{name}</Text>
       <Voted>{voteCount} 표</Voted>
-      <VoteButton onClick={() => onClickVote()}>투표</VoteButton>
+      <VoteButton onClick={onClickVote}>투표</VoteButton>
     </EachCandidate>
   );
 };
