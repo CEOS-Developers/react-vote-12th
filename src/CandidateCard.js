@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 const voteURL = 'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/vote';
 function CandidateCard({candidate, index, cookies}) {
-    const handleVoteCount= (candidate)=> {
+    const handleVoteCount= () => {
         axios({
             method: 'get', url: `${voteURL}?id=${candidate.id}`,
             headers: {
@@ -22,11 +22,10 @@ function CandidateCard({candidate, index, cookies}) {
             <CandidateRank>{index+1}위 </CandidateRank>
             <CandidateName>{candidate.name}</CandidateName>
             <CandidateVoteCount>[{candidate.voteCount}] 표</CandidateVoteCount>
-            <VoteButton onClick={()=>handleVoteCount(candidate)}>투표</VoteButton>
+            <VoteButton onClick={handleVoteCount}>투표</VoteButton>
         </EachCandidate>
     );
 }
-export default CandidateCard;
 const EachCandidate = styled.div`
     @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
     font-family: 'Do Hyeon', sans-serif;
@@ -63,3 +62,4 @@ const VoteButton = styled.button`
         outline: none;
     }
 `;
+export default CandidateCard;

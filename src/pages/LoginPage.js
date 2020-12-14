@@ -1,26 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import qs from 'querystring';
 import styled from 'styled-components';
-const signupURL = 'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/auth/signup'
-function SignUpPage({setIsSignUpFinished}){
-    const [name, setName] = useState("");
+const loginURL = 'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/auth/login'
+function LoginPage(){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const handleNameChange = (e) => {
-        setName(e.target.value);
-    }
+    const [shouldRememberEmail, setShouldRememberEmail] = useState(false);
+    const [cookies, setCookie, removeCookie] = useCookies(['rememberEmail']);
+    useEffect(() => {
+        if(cookies.rememberEmail){
+            setEmail(cookies.rememberEmail);
+            setShouldRememberEmail(true);
+        }
+    }, []);
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
     }
     const handlePasswordChange = (e) => {
         setPassword(e.target.value);
     }
-    const handleSignUpButtonClick = () => {
+    const handleEmailRememberButtonClick = (e) => {
+        setShouldRememberEmail(e.target.check);
+        if(e.target.check){
+            setCookie('rememberEmail', email, {maxAge: 2000});
+        }
+        else{
+            removeCookie('rememberEmail');
+        }
+    }
+    const handleLoginButtonClick = () => {
         axios({
-            method: 'post', url: signupURL,
+            method: 'post', url: loginURL,
             data: qs.stringify({
-                name: name,
                 email: email,
                 password: password
             }),
@@ -28,22 +41,16 @@ function SignUpPage({setIsSignUpFinished}){
                 'content-type': 'application/x-www-form-urlencoded'
             }
         })
-        .then (() => {
-            alert('회원가입 성공');
-            setIsSignUpFinished('true');
-            
+        .then ((response) => {
+            setCookie('token', JSON.stringify(response.data));
         })
-        .catch((err) => {
-            alert('회원가입 실패');
-        });
+        .catch (() => {
+            alert('로그인 실패');
+        })
     }
     return(
         <Wrapper>
-            <Title>회원가입</Title>
-            <EachField>
-                이름
-                <InputField value={name} onChange={handleNameChange} placeholder="이름을 입력하세요"/>
-            </EachField>
+            <Title>로그인</Title>
             <EachField>
                 이메일
                 <InputField value={email} onChange={handleEmailChange} placeholder="이메일을 입력하세요"/>
@@ -52,11 +59,14 @@ function SignUpPage({setIsSignUpFinished}){
                 비밀번호
                 <InputField type="password" value={password} onChange={handlePasswordChange} placeholder="비밀번호를 입력하세요"/>
             </EachField>
-            <SignUpButton onClick={handleSignUpButtonClick}>회원가입</SignUpButton>
+            <IsEmailRememberCheckBox>
+                <input type="checkbox" onChange={handleEmailRememberButtonClick} checked={isEmailRemember}/>
+                이메일 저장하기
+            </IsEmailRememberCheckBox>
+            <LoginButton onClick={handleLoginButtonClick}>로그인</LoginButton>
         </Wrapper>
     )
 }
-export default SignUpPage;
 const Wrapper = styled.div`
     @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
     font-family: 'Do Hyeon', sans-serif;
@@ -89,7 +99,11 @@ const InputField = styled.input`
         outline: none;
     }
 `;
-const SignUpButton = styled.button`
+const IsEmailRememberCheckBox = styled.div`
+    position: absolute; 
+    right: 0;
+`;
+const LoginButton = styled.button`
     font-family: 'Do Hyeon', sans-serif;
     font-size: 17px;
     position: absolute;
@@ -107,3 +121,4 @@ const SignUpButton = styled.button`
         outline: none;
     }
 `;
+export default LoginPage;

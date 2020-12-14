@@ -3,12 +3,12 @@ import styled from 'styled-components';
 import axios from 'axios';
 import CandidateCard from './CandidateCard';
 import { useCookies } from 'react-cookie';
-import LoginPage from './LoginPage';
-import SignUpPage from './SignUpPage';
+import LoginPage from './pages/LoginPage';
+import SignUpPage from './pages/SignUpPage';
 const dataURL = 'http://ec2-3-34-5-220.ap-northeast-2.compute.amazonaws.com:8080/candidates';
 function CandidateList() {
     const [candidates, setCandidates] = useState(null);
-    const [isLogIn, setIsLogIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isSignUpFinished, setIsSignUpFinished] = useState(false);
     const [isLogInPage, setIsLogInPage] = useState(false);
     const [isSignUpPage, setIsSignUpPage] = useState(false);
@@ -18,7 +18,7 @@ function CandidateList() {
         setCandidates(data);
     }
     const handleLogInOutButtonClick = () => {
-        if(isLogIn) {
+        if(isLoggedIn) {
             removeCookie('token');
             setIsLogIn(false);
             setIsLogInPage(false);
@@ -39,7 +39,7 @@ function CandidateList() {
     }
     useEffect(() => {
         getCandidates();
-        cookies.token === 'undefined' ? setIsLogIn(false) : setIsLogIn(true);
+        !cookies.token ? setIsLogIn(false) : setIsLogIn(true);
     }, [candidates]);
     return(
         <Wrapper>
@@ -48,12 +48,12 @@ function CandidateList() {
             <ButtonsWrapper>
                 <ShowResultButton onClick={handleShowResultButtonClick}>결과보기</ShowResultButton>
                 <LogInOutButton onClick={handleLogInOutButtonClick}>
-                    {isLogIn ? '로그아웃' : '로그인'}
+                    {isLoggedIn ? '로그아웃' : '로그인'}
                 </LogInOutButton>
                 <SignUpButton onClick={handleSignUpButtonClick}>회원가입</SignUpButton>
             </ButtonsWrapper>
             <>
-            { isLogInPage && !isLogIn &&
+            { isLogInPage && !isLoggedIn &&
                 <ShowingPage>
                     <LoginPage/>
                 </ShowingPage>
@@ -63,7 +63,7 @@ function CandidateList() {
                     <SignUpPage {...{setIsSignUpFinished}}/>
                 </ShowingPage>
             }
-            { (!isLogInPage || isLogIn) && (!isSignUpPage || isSignUpFinished) &&
+            { (!isLogInPage || isLoggedIn) && (!isSignUpPage || isSignUpFinished) &&
                 <ShowingPage>
                 {
                 candidates &&
@@ -80,7 +80,6 @@ function CandidateList() {
         </Wrapper>
     );
 }
-export default CandidateList;
 const Wrapper = styled.div`
     @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
     font-family: 'Do Hyeon', sans-serif;
@@ -137,3 +136,4 @@ const ShowingPage = styled.div`
     width: 300px;
     height: 200px;
 `;
+export default CandidateList;
